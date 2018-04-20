@@ -26,7 +26,3 @@ RUN C:\msys64\usr\bin\bash.exe -l -c 'exit 0'; `
     C:\msys64\usr\bin\bash.exe -l -c 'pacman -Syu  --needed --noconfirm --noprogressbar --ask=20'; `
     C:\msys64\usr\bin\bash.exe -l -c 'pacman -Su   --needed --noconfirm --noprogressbar --ask=20'; `
     C:\msys64\usr\bin\bash.exe -l -c 'echo "Successfully installed MSYS2"';
-
-SHELL ["C:\\msys64\\usr\\bin\\bash.exe", "-l", "-c"]
-
-ENTRYPOINT ["C:\\msys64\\usr\\bin\\bash.exe", "-l"]
