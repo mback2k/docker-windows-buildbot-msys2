@@ -1,0 +1,33 @@
+version: "{build}"
+image: Visual Studio 2017
+
+environment:
+  DOCKER_PASSWORD:
+    secure: v8+vIvWq34We9//EqfDiA9ojV9IWtRFS10sIybwALk7Sm/NuQAtvXU4KTmUUnq7/
+
+  matrix:
+    - DOCKER_FILE: Dockerfile
+      DOCKER_TAG: latest_ltsc2016
+      BASE_TAG: latest_ltsc2016
+    - DOCKER_FILE: Dockerfile
+      DOCKER_TAG: eight_ltsc2016
+      BASE_TAG: eight_ltsc2016
+
+install:
+  - ps: Write-Host Server version $(gp 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion').BuildLabEx
+  - ps: $env:DOCKER_PROJECT=$env:APPVEYOR_PROJECT_NAME-replace("docker-")
+  - ps: $env:DOCKER_PROJECT=$env:APPVEYOR_ACCOUNT_NAME+'/'+$env:DOCKER_PROJECT
+  - ps: $env:DOCKER_PROJECT=$env:DOCKER_PROJECT+':'+$env:DOCKER_TAG
+  - ps: Write-Host Building project $env:DOCKER_PROJECT
+  - ps: docker version
+
+build_script:
+  - ps: docker build --build-arg BASE_TAG=$env:BASE_TAG -t $env:DOCKER_PROJECT -f $env:DOCKER_FILE .
+
+test_script:
+  - ps: docker run --rm $env:DOCKER_PROJECT
+
+deploy_script:
+  - ps: docker login -u="$env:APPVEYOR_ACCOUNT_NAME" -p="$env:DOCKER_PASSWORD"
+  - ps: docker push $env:DOCKER_PROJECT
+  - ps: docker logout
