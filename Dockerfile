@@ -4,6 +4,9 @@ ARG BASE_TAG=latest_1709
 
 FROM mback2k/windows-buildbot-worker:${BASE_TAG}
 
+USER ContainerAdministrator
+WORKDIR C:\
+
 SHELL ["powershell", "-command"]
 
 RUN Invoke-WebRequest "http://www.7-zip.org/a/7z1604-x64.exe" -OutFile 7z1604-x64.exe; `
@@ -26,3 +29,6 @@ RUN C:\msys64\usr\bin\bash.exe -l -c 'exit 0'; `
     C:\msys64\usr\bin\bash.exe -l -c 'pacman -Syu  --needed --noconfirm --noprogressbar --ask=20'; `
     C:\msys64\usr\bin\bash.exe -l -c 'pacman -Su   --needed --noconfirm --noprogressbar --ask=20'; `
     C:\msys64\usr\bin\bash.exe -l -c 'echo "Successfully installed MSYS2"';
+
+WORKDIR C:\Buildbot
+USER Buildbot
