@@ -5,18 +5,17 @@ ARG BASE_TAG=latest_1709
 FROM mback2k/windows-buildbot-worker:${BASE_TAG}
 
 USER ContainerAdministrator
-WORKDIR C:\
 
 SHELL ["powershell", "-command"]
 
-RUN Invoke-WebRequest "http://www.7-zip.org/a/7z1604-x64.exe" -OutFile 7z1604-x64.exe; `
-    Start-Process -FilePath "C:\7z1604-x64.exe" -ArgumentList /S -NoNewWindow -PassThru -Wait; `
-    Remove-Item 7z1604-x64.exe;
+RUN Invoke-WebRequest "http://www.7-zip.org/a/7z1604-x64.exe" -OutFile "C:\Windows\Temp\7z1604-x64.exe"; `
+    Start-Process -FilePath "C:\Windows\Temp\7z1604-x64.exe" -ArgumentList /S -NoNewWindow -PassThru -Wait; `
+    Remove-Item @('C:\Windows\Temp\*', 'C:\Users\*\Appdata\Local\Temp\*') -Force -Recurse;
 
-RUN Invoke-WebRequest "http://repo.msys2.org/distrib/msys2-x86_64-latest.tar.xz" -OutFile msys2-x86_64-latest.tar.xz; `
-    Start-Process -FilePath "C:\Program` Files\7-Zip\7z.exe" -ArgumentList e, msys2-x86_64-latest.tar.xz -NoNewWindow -PassThru -Wait; `
-    Start-Process -FilePath "C:\Program` Files\7-Zip\7z.exe" -ArgumentList x, msys2-x86_64-latest.tar, `-oC:\ -NoNewWindow -PassThru -Wait; `
-    Remove-Item msys2-x86_64-latest.tar.xz; Remove-Item msys2-x86_64-latest.tar;
+RUN Invoke-WebRequest "http://repo.msys2.org/distrib/msys2-x86_64-latest.tar.xz" -OutFile "C:\Windows\Temp\msys2-x86_64-latest.tar.xz"; `
+    Start-Process -FilePath "C:\Program` Files\7-Zip\7z.exe" -ArgumentList e, "C:\Windows\Temp\msys2-x86_64-latest.tar.xz", `-oC:\Windows\Temp\ -NoNewWindow -PassThru -Wait; `
+    Start-Process -FilePath "C:\Program` Files\7-Zip\7z.exe" -ArgumentList x, "C:\Windows\Temp\msys2-x86_64-latest.tar", `-oC:\ -NoNewWindow -PassThru -Wait; `
+    Remove-Item @('C:\Windows\Temp\*', 'C:\Users\*\Appdata\Local\Temp\*') -Force -Recurse;
 
 RUN Write-Host 'Updating MSYSTEM and MSYSCON ...'; `
     [Environment]::SetEnvironmentVariable('MSYSTEM', 'MSYS2', [EnvironmentVariableTarget]::Machine); `
@@ -30,5 +29,4 @@ RUN C:\msys64\usr\bin\bash.exe -l -c 'exit 0'; `
     C:\msys64\usr\bin\bash.exe -l -c 'pacman -Su   --needed --noconfirm --noprogressbar --ask=20'; `
     C:\msys64\usr\bin\bash.exe -l -c 'echo "Successfully installed MSYS2"';
 
-WORKDIR C:\Buildbot
 USER Buildbot
