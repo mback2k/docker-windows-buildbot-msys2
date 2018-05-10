@@ -2,7 +2,7 @@
 
 ARG BASE_TAG=latest_1709
 
-FROM mback2k/windows-buildbot-worker:${BASE_TAG}
+FROM mback2k/windows-buildbot-tools:${BASE_TAG}
 
 USER ContainerAdministrator
 
