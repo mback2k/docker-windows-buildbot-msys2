@@ -25,7 +25,7 @@ build_script:
   - ps: docker build --build-arg BASE_TAG=$env:BASE_TAG -t $env:DOCKER_PROJECT -f $env:DOCKER_FILE .
 
 test_script:
-  - ps: docker run --rm $env:DOCKER_PROJECT
+  - ps: timeout 1m docker run --rm $env:DOCKER_PROJECT
 
 deploy_script:
   - ps: docker login -u="$env:APPVEYOR_ACCOUNT_NAME" -p="$env:DOCKER_PASSWORD"
