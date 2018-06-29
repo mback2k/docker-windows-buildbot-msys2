@@ -25,6 +25,6 @@ build_script:
   - ps: docker build --build-arg BASE_TAG=$env:BASE_TAG -t $env:DOCKER_PROJECT -f $env:DOCKER_FILE .
 
 deploy_script:
-  - ps: docker login -u="$env:APPVEYOR_ACCOUNT_NAME" -p="$env:DOCKER_PASSWORD"
+  - ps: echo "$env:DOCKER_PASSWORD" | docker login --username "$env:APPVEYOR_ACCOUNT_NAME" --password-stdin
   - ps: docker push $env:DOCKER_PROJECT
   - ps: docker logout
