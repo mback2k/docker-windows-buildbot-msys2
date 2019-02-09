@@ -19,9 +19,15 @@ RUN Write-Host 'Updating MSYSTEM and MSYSCON ...'; `
 
 # For some reason bash.exe has to be called first since we are not building interactive.
 RUN C:\msys64\usr\bin\bash.exe -l -c 'exit 0'; `
-    C:\msys64\usr\bin\bash.exe -l -c 'echo "Now installing MSYS2..."'; `
-    C:\msys64\usr\bin\bash.exe -l -c 'pacman -Syuu --needed --noconfirm --noprogressbar --ask=20'; `
-    C:\msys64\usr\bin\bash.exe -l -c 'pacman -Syu  --needed --noconfirm --noprogressbar --ask=20'; `
+    C:\msys64\usr\bin\bash.exe -l -c 'echo "Now installing MSYS2... (1/3)"'; `
+    C:\msys64\usr\bin\bash.exe -l -c 'pacman -Syuu --needed --noconfirm --noprogressbar --ask=20';
+
+RUN C:\msys64\usr\bin\bash.exe -l -c 'exit 0'; `
+    C:\msys64\usr\bin\bash.exe -l -c 'echo "Now installing MSYS2... (2/3)"'; `
+    C:\msys64\usr\bin\bash.exe -l -c 'pacman -Syu  --needed --noconfirm --noprogressbar --ask=20';
+
+RUN C:\msys64\usr\bin\bash.exe -l -c 'exit 0'; `
+    C:\msys64\usr\bin\bash.exe -l -c 'echo "Now installing MSYS2... (3/3)"'; `
     C:\msys64\usr\bin\bash.exe -l -c 'pacman -Su   --needed --noconfirm --noprogressbar --ask=20'; `
     C:\msys64\usr\bin\bash.exe -l -c 'echo "Successfully installed MSYS2"';
 
