@@ -24,10 +24,12 @@ RUN C:\msys64\usr\bin\bash.exe -l -c 'exit 0'; `
     C:\msys64\usr\bin\bash.exe -l -c 'pacman -Syuu --needed --noconfirm --noprogressbar --ask=20'; `
     C:\msys64\usr\bin\bash.exe -l -c 'pacman -Syu  --needed --noconfirm --noprogressbar --ask=20'; `
     C:\msys64\usr\bin\bash.exe -l -c 'pacman -Su   --needed --noconfirm --noprogressbar --ask=20'; `
+    C:\msys64\usr\bin\bash.exe -l -c 'pacman -Scc --noconfirm'; `
     C:\msys64\usr\bin\bash.exe -l -c 'echo "Successfully installed MSYS2"';
 
 RUN C:\msys64\usr\bin\bash.exe -l -c 'exit 0'; `
     C:\msys64\usr\bin\bash.exe -l -c 'echo "Now installing MinGW-w64..."'; `
     C:\msys64\usr\bin\bash.exe -l -c 'pacman -S --needed --noconfirm --noprogressbar mingw-w64-i686-toolchain mingw-w64-x86_64-toolchain'; `
     C:\msys64\usr\bin\bash.exe -l -c 'pacman -S --needed --noconfirm --noprogressbar automake autoconf make intltool libtool zip unzip'; `
+    C:\msys64\usr\bin\bash.exe -l -c 'pacman -Scc --noconfirm'; `
     C:\msys64\usr\bin\bash.exe -l -c 'echo "Successfully installed MinGW-w64"';
