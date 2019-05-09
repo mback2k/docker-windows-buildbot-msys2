@@ -3,7 +3,7 @@ image: Visual Studio 2017
 
 environment:
   DOCKER_PASSWORD:
-    secure: v8+vIvWq34We9//EqfDiA9ojV9IWtRFS10sIybwALk7Sm/NuQAtvXU4KTmUUnq7/
+    secure: rh5qkb2OkZ1sfMcb1zgYgZPV93kc8QbtAhON7LlKoLTNPIKUvN4eOLwHwyX2Gie2
 
   matrix:
     - DOCKER_FILE: Dockerfile
