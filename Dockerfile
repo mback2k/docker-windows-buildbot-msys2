@@ -4,8 +4,6 @@ ARG BASE_TAG=latest_1803
 
 FROM mback2k/windows-buildbot-tools:${BASE_TAG}
 
-SHELL ["powershell", "-command"]
-
 ARG MSYS2_X86_64="http://repo.msys2.org/distrib/msys2-x86_64-latest.tar.xz"
 
 RUN [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; `
