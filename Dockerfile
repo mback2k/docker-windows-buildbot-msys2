@@ -4,7 +4,7 @@ ARG BASE_TAG=latest_1803
 
 FROM mback2k/windows-buildbot-tools:${BASE_TAG}
 
-ARG MSYS2_X86_64="http://repo.msys2.org/distrib/x86_64/msys2-base-x86_64-20181211.tar.xz"
+ARG MSYS2_X86_64="http://repo.msys2.org/distrib/x86_64/msys2-base-x86_64-20190524.tar.xz"
 
 RUN [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; `
     Invoke-WebRequest $env:MSYS2_X86_64 -OutFile "C:\Windows\Temp\msys2-x86_64.tar.xz"; `
@@ -23,7 +23,11 @@ RUN C:\msys64\usr\bin\bash.exe -l -c 'exit 0'; `
     C:\msys64\usr\bin\bash.exe -l -c 'pacman -Su   --needed --noconfirm --noprogressbar'; `
     C:\msys64\usr\bin\bash.exe -l -c 'pacman -Scc --noconfirm'; `
     C:\msys64\usr\bin\bash.exe -l -c 'echo "Successfully installed MSYS2"'; `
-    C:\msys64\usr\bin\bash.exe -l -c 'exit 0';
+    C:\msys64\usr\bin\bash.exe -l -c 'exit 0'; `
+    Get-Process | Where-Object {$_.Path -Like 'C:\msys64\*'} | Stop-Process -Force -PassThru | Wait-Process; `
+    Get-Process @('bash', 'dirmngr', 'gpg-agent', 'pacman') -ErrorAction SilentlyContinue | Stop-Process -Force -PassThru | Wait-Process; `
+    Remove-Item @('C:\$Recycle.Bin\*') -Force -Recurse -ErrorAction Continue; `
+    Write-Host 'Cleared Recycle Bin ...';
 
 RUN C:\msys64\usr\bin\bash.exe -l -c 'exit 0'; `
     C:\msys64\usr\bin\bash.exe -l -c 'echo "Now installing MinGW-w64..."'; `
@@ -31,4 +35,8 @@ RUN C:\msys64\usr\bin\bash.exe -l -c 'exit 0'; `
     C:\msys64\usr\bin\bash.exe -l -c 'pacman -S --needed --noconfirm --noprogressbar automake autoconf make intltool libtool zip unzip'; `
     C:\msys64\usr\bin\bash.exe -l -c 'pacman -Scc --noconfirm'; `
     C:\msys64\usr\bin\bash.exe -l -c 'echo "Successfully installed MinGW-w64"'; `
-    C:\msys64\usr\bin\bash.exe -l -c 'exit 0';
+    C:\msys64\usr\bin\bash.exe -l -c 'exit 0'; `
+    Get-Process | Where-Object {$_.Path -Like 'C:\msys64\*'} | Stop-Process -Force -PassThru | Wait-Process; `
+    Get-Process @('bash', 'dirmngr', 'gpg-agent', 'pacman') -ErrorAction SilentlyContinue | Stop-Process -Force -PassThru | Wait-Process; `
+    Remove-Item @('C:\$Recycle.Bin\*') -Force -Recurse -ErrorAction Continue; `
+    Write-Host 'Cleared Recycle Bin ...';
