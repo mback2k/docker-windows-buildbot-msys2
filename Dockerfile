@@ -18,6 +18,12 @@ RUN Write-Host 'Updating MSYSTEM and MSYSCON ...'; `
     [Environment]::SetEnvironmentVariable('MSYSCON', 'defterm', [EnvironmentVariableTarget]::Machine);
 
 RUN C:\msys64\usr\bin\bash.exe -l -c 'exit 0'; `
+    Get-Process | Where-Object {$_.Path -Like 'C:\msys64\*'} | Stop-Process -Force -PassThru | Wait-Process; `
+    Get-Process @('bash', 'dirmngr', 'gpg-agent', 'pacman') -ErrorAction SilentlyContinue | Stop-Process -Force -PassThru | Wait-Process; `
+    Remove-Item @('C:\$Recycle.Bin\*') -Force -Recurse -ErrorAction Continue; `
+    Write-Host 'Cleared Recycle Bin ...';
+
+RUN C:\msys64\usr\bin\bash.exe -l -c 'exit 0'; `
     C:\msys64\usr\bin\bash.exe -l -c 'echo "Now installing MSYS2..."'; `
     C:\msys64\usr\bin\bash.exe -l -c 'pacman -Syuu --needed --noconfirm --noprogressbar'; `
     C:\msys64\usr\bin\bash.exe -l -c 'pacman -Syu  --needed --noconfirm --noprogressbar'; `
