@@ -1,8 +1,9 @@
 # escape=`
 
+ARG BASE_IMAGE=mback2k/windows-buildbot-tools
 ARG BASE_TAG=latest_1803
 
-FROM mback2k/windows-buildbot-tools:${BASE_TAG}
+FROM ${BASE_IMAGE}:${BASE_TAG}
 
 ARG MSYS2_X86_64="http://repo.msys2.org/distrib/x86_64/msys2-base-x86_64-20190524.tar.xz"
 
